@@ -312,12 +312,18 @@ async function loadData(){
     '<tr><td colspan="8" class="tbl-empty"><div class="spinner"></div>Đang tải…</td></tr>';
   try{
     var res = await fetch('/.netlify/functions/registrations?pw=' + encodeURIComponent(adminPassword));
-    allData = await res.json();
+    var body = await res.json();
+    if(!res.ok){
+      document.getElementById('tableBody').innerHTML =
+        '<tr><td colspan="8" class="tbl-empty">⚠️ ' + (body.error || 'Lỗi ' + res.status) + '</td></tr>';
+      return;
+    }
+    allData = body;
     updateStats();
     renderTable();
   } catch(e){
     document.getElementById('tableBody').innerHTML =
-      '<tr><td colspan="8" class="tbl-empty">Lỗi khi tải dữ liệu. Thử lại.</td></tr>';
+      '<tr><td colspan="8" class="tbl-empty">Không kết nối được server: ' + e.message + '</td></tr>';
   }
 }
 
