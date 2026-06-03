@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin · Đăng ký Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --black:#0e0d0d;--ink:#161313;--red:#d11f2a;--red-deep:#a8141d;
+  --cream:#f6f2ea;--paper:#fff;--line:#e3dccd;--muted:#6f675c;
+  --green:#16a34a;--green-bg:rgba(22,163,74,.1);
+  --amber:#b45309;--amber-bg:rgba(180,83,9,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Be Vietnam Pro',system-ui,sans-serif;background:var(--black);color:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ===== LOGIN ===== */
+#loginWrap{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(700px 400px at 80% 0%,rgba(209,31,42,.22),transparent 60%);
+}
+.login-card{background:#1a1818;border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:48px 40px;width:100%;max-width:400px;text-align:center}
+.login-card .logo{font-size:13px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:32px}
+.login-card h1{font-size:24px;font-weight:800;margin-bottom:8px}
+.login-card p{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:32px}
+.login-field{position:relative;margin-bottom:16px}
+.login-field input{
+  width:100%;padding:14px 16px;border-radius:8px;
+  background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);
+  color:#fff;font-family:inherit;font-size:15px;letter-spacing:.08em;
+  transition:border-color .15s ease;
+}
+.login-field input:focus{outline:none;border-color:var(--red)}
+.login-field input::placeholder{letter-spacing:0;color:rgba(255,255,255,.3)}
+.login-btn{
+  width:100%;padding:15px;border-radius:8px;border:none;cursor:pointer;
+  background:var(--red);color:#fff;font-family:inherit;font-size:15px;font-weight:700;
+  transition:background .15s ease;
+}
+.login-btn:hover{background:var(--red-deep)}
+.login-err{font-size:13px;color:#f87171;margin-top:12px;display:none}
+
+/* ===== DASHBOARD ===== */
+#dashboard{display:none;min-height:100vh;flex-direction:column}
+
+/* top bar */
+.topbar{
+  background:#1a1818;border-bottom:1px solid rgba(255,255,255,.08);
+  padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:10;
+}
+.topbar-brand{font-size:15px;font-weight:800;display:flex;align-items:center;gap:10px}
+.topbar-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.logout-btn{
+  font-size:13px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;
+  padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.12);
+  background:transparent;font-family:inherit;transition:all .15s ease;
+}
+.logout-btn:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.refresh-btn{
+  font-size:13px;font-weight:600;cursor:pointer;
+  padding:7px 14px;border-radius:6px;border:none;
+  background:rgba(209,31,42,.15);color:var(--red);font-family:inherit;transition:all .15s ease;
+}
+.refresh-btn:hover{background:rgba(209,31,42,.25)}
+
+/* main content */
+.main{flex:1;padding:32px}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.stat{background:#1a1818;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:22px 24px}
+.stat .label{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:10px}
+.stat .num{font-size:36px;font-weight:800;letter-spacing:-.02em}
+.stat.paid .num{color:#4ade80}
+.stat.unpaid .num{color:#fbbf24}
+
+/* toolbar */
+.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+.search-wrap{position:relative;flex:1;min-width:200px}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:rgba(255,255,255,.35);fill:none;stroke-width:2}
+.search-wrap input{
+  width:100%;padding:10px 14px 10px 38px;border-radius:8px;
+  background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);
+  color:#fff;font-family:inherit;font-size:14px;transition:border-color .15s ease;
+}
+.search-wrap input:focus{outline:none;border-color:var(--red)}
+.search-wrap input::placeholder{color:rgba(255,255,255,.3)}
+.filter-btns{display:flex;gap:8px}
+.filter-btn{
+  padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.6);
+  font-family:inherit;transition:all .15s ease;
+}
+.filter-btn:hover{border-color:rgba(255,255,255,.3);color:#fff}
+.filter-btn.active{background:var(--red);border-color:var(--red);color:#fff}
+.export-btn{
+  padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;
+  border:none;background:rgba(255,255,255,.08);color:#fff;font-family:inherit;
+  display:flex;align-items:center;gap:7px;transition:background .15s ease;
+}
+.export-btn:hover{background:rgba(255,255,255,.14)}
+.export-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* table */
+.table-wrap{background:#1a1818;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{
+  padding:13px 16px;text-align:left;font-size:12px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);
+  background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.08);
+  white-space:nowrap;
+}
+.tbl td{
+  padding:14px 16px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.05);
+  vertical-align:middle;
+}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:rgba(255,255,255,.03)}
+.tbl .num-col{color:rgba(255,255,255,.35);font-size:12px;width:40px}
+.tbl .time-col{color:rgba(255,255,255,.5);font-size:12.5px;white-space:nowrap}
+.tbl .name-col{font-weight:700}
+.tbl .muted{color:rgba(255,255,255,.55)}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;
+}
+.badge.paid{background:var(--green-bg);color:#4ade80}
+.badge.unpaid{background:var(--amber-bg);color:#fbbf24}
+.badge svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:3}
+
+/* empty / loading states */
+.tbl-empty{padding:60px 24px;text-align:center;color:rgba(255,255,255,.35);font-size:15px}
+.spinner{
+  width:28px;height:28px;border:3px solid rgba(255,255,255,.12);border-top-color:var(--red);
+  border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:680px){
+  .stats{grid-template-columns:1fr 1fr}
+  .topbar{padding:0 18px}
+  .main{padding:20px}
+  .tbl th:nth-child(5),.tbl td:nth-child(5),
+  .tbl th:nth-child(6),.tbl td:nth-child(6){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginWrap">
+  <div class="login-card">
+    <p class="logo">Workshop Admin</p>
+    <h1>Đăng nhập</h1>
+    <p>Nhập mật khẩu quản trị để xem danh sách đăng ký.</p>
+    <form id="loginForm">
+      <div class="login-field">
+        <input type="password" id="pwInput" placeholder="Mật khẩu" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="login-btn">Đăng nhập</button>
+      <p class="login-err" id="loginErr">Sai mật khẩu. Thử lại.</p>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <nav class="topbar">
+    <div class="topbar-brand">
+      <span class="dot"></span>
+      Danh sách đăng ký Workshop
+    </div>
+    <div class="topbar-right">
+      <button class="refresh-btn" onclick="loadData()">↺ Làm mới</button>
+      <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+    </div>
+  </nav>
+
+  <div class="main">
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="label">Tổng đăng ký</div>
+        <div class="num" id="statTotal">—</div>
+      </div>
+      <div class="stat paid">
+        <div class="label">Đã chuyển khoản</div>
+        <div class="num" id="statPaid">—</div>
+      </div>
+      <div class="stat unpaid">
+        <div class="label">Chưa chuyển khoản</div>
+        <div class="num" id="statUnpaid">—</div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Tìm theo tên, SĐT, email, công ty…" oninput="renderTable()" />
+      </div>
+      <div class="filter-btns">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Tất cả</button>
+        <button class="filter-btn" data-filter="paid" onclick="setFilter('paid')">Đã CK</button>
+        <button class="filter-btn" data-filter="unpaid" onclick="setFilter('unpaid')">Chưa CK</button>
+      </div>
+      <button class="export-btn" onclick="exportCSV()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Xuất CSV
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th class="num-col">#</th>
+            <th>Thời gian</th>
+            <th>Họ và tên</th>
+            <th>SĐT</th>
+            <th>Email</th>
+            <th>Công ty</th>
+            <th>Chức vụ</th>
+            <th>Thanh toán</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="8" class="tbl-empty"><div class="spinner"></div>Đang tải…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+var allData = [];
+var currentFilter = 'all';
+var adminPassword = '';
+
+// ── Auth ──────────────────────────────────────────────────────────────────
+document.getElementById('loginForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  var pw = document.getElementById('pwInput').value;
+  var btn = this.querySelector('.login-btn');
+  var err = document.getElementById('loginErr');
+  btn.textContent = 'Đang kiểm tra…';
+  btn.disabled = true;
+  err.style.display = 'none';
+
+  var ok = await checkPassword(pw);
+  if(ok){
+    adminPassword = pw;
+    sessionStorage.setItem('adminPw', pw);
+    showDashboard();
+  } else {
+    err.style.display = 'block';
+    btn.textContent = 'Đăng nhập';
+    btn.disabled = false;
+  }
+});
+
+async function checkPassword(pw){
+  try{
+    var res = await fetch('/.netlify/functions/registrations', {
+      headers: { 'x-admin-password': pw }
+    });
+    if(res.ok){ allData = await res.json(); return true; }
+    return false;
+  } catch(e){ return false; }
+}
+
+function logout(){
+  sessionStorage.removeItem('adminPw');
+  adminPassword = '';
+  allData = [];
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('pwInput').value = '';
+}
+
+function showDashboard(){
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'flex';
+  updateStats();
+  renderTable();
+}
+
+// Auto-login if session has password
+(async function(){
+  var saved = sessionStorage.getItem('adminPw');
+  if(saved){
+    var ok = await checkPassword(saved);
+    if(ok){ adminPassword = saved; showDashboard(); }
+  }
+})();
+
+// ── Data ──────────────────────────────────────────────────────────────────
+async function loadData(){
+  document.getElementById('tableBody').innerHTML =
+    '<tr><td colspan="8" class="tbl-empty"><div class="spinner"></div>Đang tải…</td></tr>';
+  try{
+    var res = await fetch('/.netlify/functions/registrations', {
+      headers: { 'x-admin-password': adminPassword }
+    });
+    allData = await res.json();
+    updateStats();
+    renderTable();
+  } catch(e){
+    document.getElementById('tableBody').innerHTML =
+      '<tr><td colspan="8" class="tbl-empty">Lỗi khi tải dữ liệu. Thử lại.</td></tr>';
+  }
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function updateStats(){
+  var total  = allData.length;
+  var paid   = allData.filter(r => r.da_chuyen_khoan === 'Đã chuyển khoản').length;
+  document.getElementById('statTotal').textContent  = total;
+  document.getElementById('statPaid').textContent   = paid;
+  document.getElementById('statUnpaid').textContent = total - paid;
+}
+
+function setFilter(f){
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.filter === f);
+  });
+  renderTable();
+}
+
+function renderTable(){
+  var q = document.getElementById('searchInput').value.toLowerCase().trim();
+  var rows = allData.filter(function(r){
+    if(currentFilter === 'paid'   && r.da_chuyen_khoan !== 'Đã chuyển khoản') return false;
+    if(currentFilter === 'unpaid' && r.da_chuyen_khoan === 'Đã chuyển khoản') return false;
+    if(!q) return true;
+    return [r.hoten,r.sdt,r.email,r.congty,r.chucvu].join(' ').toLowerCase().includes(q);
+  });
+
+  if(!rows.length){
+    document.getElementById('tableBody').innerHTML =
+      '<tr><td colspan="8" class="tbl-empty">Không có kết quả nào.</td></tr>';
+    return;
+  }
+
+  document.getElementById('tableBody').innerHTML = rows.map(function(r, i){
+    var paid = r.da_chuyen_khoan === 'Đã chuyển khoản';
+    var dt = r.created_at ? new Date(r.created_at) : null;
+    var time = dt ? dt.toLocaleString('vi-VN', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
+    return '<tr>'
+      + '<td class="num-col">' + (i+1) + '</td>'
+      + '<td class="time-col">' + time + '</td>'
+      + '<td class="name-col">' + esc(r.hoten) + '</td>'
+      + '<td class="muted">' + esc(r.sdt) + '</td>'
+      + '<td class="muted">' + esc(r.email) + '</td>'
+      + '<td class="muted">' + esc(r.congty) + '</td>'
+      + '<td class="muted">' + esc(r.chucvu) + '</td>'
+      + '<td><span class="badge ' + (paid?'paid':'unpaid') + '">'
+      + '<svg viewBox="0 0 24 24">' + (paid?'<path d="M20 6L9 17l-5-5"/>':'<path d="M18 6L6 18M6 6l12 12"/>') + '</svg>'
+      + (paid ? 'Đã CK' : 'Chưa CK') + '</span></td>'
+      + '</tr>';
+  }).join('');
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ── Export CSV ────────────────────────────────────────────────────────────
+function exportCSV(){
+  var rows = [['#','Thời gian','Họ và tên','SĐT','Email','Công ty','Chức vụ','Ghi chú','Thanh toán']];
+  var q = document.getElementById('searchInput').value.toLowerCase().trim();
+  allData
+    .filter(function(r){
+      if(currentFilter === 'paid'   && r.da_chuyen_khoan !== 'Đã chuyển khoản') return false;
+      if(currentFilter === 'unpaid' && r.da_chuyen_khoan === 'Đã chuyển khoản') return false;
+      if(!q) return true;
+      return [r.hoten,r.sdt,r.email,r.congty,r.chucvu].join(' ').toLowerCase().includes(q);
+    })
+    .forEach(function(r, i){
+      var dt = r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : '';
+      rows.push([i+1, dt, r.hoten, r.sdt, r.email, r.congty, r.chucvu, r.ghichu, r.da_chuyen_khoan]);
+    });
+
+  var csv = rows.map(function(r){
+    return r.map(function(c){ return '"' + String(c||'').replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\n');
+
+  var blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url; a.download = 'dang-ky-workshop.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>

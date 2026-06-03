@@ -597,11 +597,7 @@ h1,h2,h3{font-weight:800;line-height:1.04;letter-spacing:-.02em}
 
 <script>
 (function(){
-  /*
-   * DÁN URL GOOGLE APPS SCRIPT WEB APP CỦA BẠN VÀO ĐÂY
-   * (xem file google-apps-script.js để biết cách lấy URL)
-   */
-  var SCRIPT_URL = "";
+  var SCRIPT_URL = '/.netlify/functions/register';
 
   var form = document.getElementById('regForm');
   var paidCheck = document.getElementById('paidCheck');
@@ -646,14 +642,11 @@ h1,h2,h3{font-weight:800;line-height:1.04;letter-spacing:-.02em}
 
     function redirect(){ window.location.href = 'Cam On.html'; }
 
-    if(SCRIPT_URL){
-      // no-cors: trình duyệt không đọc được response nhưng dữ liệu vẫn được gửi đến Apps Script
-      fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', body: JSON.stringify(data) })
-        .catch(function(){})
-        .then(redirect);
-    } else {
-      setTimeout(redirect, 600);
-    }
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(function(){}).then(redirect);
   });
 })();
 </script>
