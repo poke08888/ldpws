@@ -3,8 +3,11 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  const password = event.headers['x-admin-password'];
-  if (!process.env.ADMIN_PASSWORD || password !== process.env.ADMIN_PASSWORD) {
+  const password = (event.queryStringParameters && event.queryStringParameters.pw) || event.headers['x-admin-password'];
+  if (!process.env.ADMIN_PASSWORD) {
+    return { statusCode: 500, body: JSON.stringify({ error: 'ADMIN_PASSWORD chưa được cấu hình trong Netlify env vars' }) };
+  }
+  if (password !== process.env.ADMIN_PASSWORD) {
     return { statusCode: 401, body: JSON.stringify({ error: 'Sai mật khẩu' }) };
   }
 

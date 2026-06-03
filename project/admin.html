@@ -256,12 +256,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
   btn.disabled = true;
   err.style.display = 'none';
 
-  var ok = await checkPassword(pw);
-  if(ok){
+  var result = await checkPassword(pw);
+  if(result.ok){
     adminPassword = pw;
     sessionStorage.setItem('adminPw', pw);
     showDashboard();
   } else {
+    err.textContent = result.msg || 'Sai mật khẩu. Thử lại.';
     err.style.display = 'block';
     btn.textContent = 'Đăng nhập';
     btn.disabled = false;
@@ -270,12 +271,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
 async function checkPassword(pw){
   try{
-    var res = await fetch('/.netlify/functions/registrations', {
-      headers: { 'x-admin-password': pw }
-    });
-    if(res.ok){ allData = await res.json(); return true; }
-    return false;
-  } catch(e){ return false; }
+    var res = await fetch('/.netlify/functions/registrations?pw=' + encodeURIComponent(pw));
+    var body = await res.json();
+    if(res.ok){ allData = body; return { ok: true }; }
+    return { ok: false, msg: body.error || ('Lỗi ' + res.status) };
+  } catch(e){
+    return { ok: false, msg: 'Không kết nối được tới server. Kiểm tra lại mạng.' };
+  }
 }
 
 function logout(){
@@ -298,8 +300,9 @@ function showDashboard(){
 (async function(){
   var saved = sessionStorage.getItem('adminPw');
   if(saved){
-    var ok = await checkPassword(saved);
-    if(ok){ adminPassword = saved; showDashboard(); }
+    var result = await checkPassword(saved);
+    if(result.ok){ adminPassword = saved; showDashboard(); }
+    else { sessionStorage.removeItem('adminPw'); }
   }
 })();
 
@@ -308,9 +311,7 @@ async function loadData(){
   document.getElementById('tableBody').innerHTML =
     '<tr><td colspan="8" class="tbl-empty"><div class="spinner"></div>Đang tải…</td></tr>';
   try{
-    var res = await fetch('/.netlify/functions/registrations', {
-      headers: { 'x-admin-password': adminPassword }
-    });
+    var res = await fetch('/.netlify/functions/registrations?pw=' + encodeURIComponent(adminPassword));
     allData = await res.json();
     updateStats();
     renderTable();
