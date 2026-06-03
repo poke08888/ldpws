@@ -1,0 +1,7 @@
+[build]
+  publish = "project"
+
+[[redirects]]
+  from = "/"
+  to   = "/Workshop%20Lam%20Thuong%20Hieu.html"
+  status = 301

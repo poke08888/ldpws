@@ -597,29 +597,13 @@ h1,h2,h3{font-weight:800;line-height:1.04;letter-spacing:-.02em}
 
 <script>
 (function(){
-  /* ============================================================
-     KẾT NỐI GOOGLE FORM (tuỳ chọn):
-     1. Tạo 1 Google Form với các câu hỏi tương ứng.
-     2. Lấy link "formResponse": thay /viewform → /formResponse.
-     3. Mỗi câu hỏi có 1 entry ID (dạng entry.123456789) — xem mã nguồn form.
-     4. Dán URL + các entry ID vào CONFIG bên dưới.
-     Nếu để trống, form vẫn chạy và hiện thông báo thành công (chưa gửi đi).
-  ============================================================ */
-  var CONFIG = {
-    formResponseURL: "", // ví dụ: https://docs.google.com/forms/d/e/XXXX/formResponse
-    entries: {
-      hoten:          "entry.0000000001",
-      sdt:            "entry.0000000002",
-      email:          "entry.0000000003",
-      congty:         "entry.0000000004",
-      chucvu:         "entry.0000000005",
-      ghichu:         "entry.0000000006",
-      dachuyenkhoan:  "entry.0000000007"
-    }
-  };
+  /*
+   * DÁN URL GOOGLE APPS SCRIPT WEB APP CỦA BẠN VÀO ĐÂY
+   * (xem file google-apps-script.js để biết cách lấy URL)
+   */
+  var SCRIPT_URL = "";
 
   var form = document.getElementById('regForm');
-  var success = document.getElementById('regSuccess');
   var paidCheck = document.getElementById('paidCheck');
   var cb = paidCheck.querySelector('input');
   cb.addEventListener('change', function(){ paidCheck.classList.toggle('lit', cb.checked); });
@@ -630,26 +614,10 @@ h1,h2,h3{font-weight:800;line-height:1.04;letter-spacing:-.02em}
       var t = el.getAttribute('data-copy');
       navigator.clipboard && navigator.clipboard.writeText(t);
       el.classList.add('copied');
-      var html = el.innerHTML; el.childNodes[0].nodeValue = 'Đã copy ✓ ';
+      el.childNodes[0].nodeValue = 'Đã copy ✓ ';
       setTimeout(function(){ el.classList.remove('copied'); el.childNodes[0].nodeValue = '7439 7979 79 '; }, 1400);
     });
   });
-
-  function submitToGoogle(data){
-    if(!CONFIG.formResponseURL) return false;
-    var iframe = document.createElement('iframe');
-    iframe.name = 'gform_hidden'; iframe.style.display='none';
-    document.body.appendChild(iframe);
-    var f = document.createElement('form');
-    f.action = CONFIG.formResponseURL; f.method='POST'; f.target='gform_hidden'; f.style.display='none';
-    Object.keys(CONFIG.entries).forEach(function(k){
-      if(data[k]==null) return;
-      var i=document.createElement('input'); i.name=CONFIG.entries[k]; i.value=data[k]; f.appendChild(i);
-    });
-    document.body.appendChild(f); f.submit();
-    setTimeout(function(){ f.remove(); iframe.remove(); }, 1500);
-    return true;
-  }
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -662,13 +630,30 @@ h1,h2,h3{font-weight:800;line-height:1.04;letter-spacing:-.02em}
     if(!ok){ form.querySelector('.invalid').focus(); return; }
 
     var data = {
-      hoten: form.hoten.value, sdt: form.sdt.value, email: form.email.value,
-      congty: form.congty.value, chucvu: form.chucvu.value, ghichu: form.ghichu.value,
+      thoigian: new Date().toLocaleString('vi-VN'),
+      hoten: form.hoten.value,
+      sdt: form.sdt.value,
+      email: form.email.value,
+      congty: form.congty.value,
+      chucvu: form.chucvu.value,
+      ghichu: form.ghichu.value,
       dachuyenkhoan: cb.checked ? 'Đã chuyển khoản' : 'Chưa chuyển khoản'
     };
-    submitToGoogle(data);
-    form.querySelector('.rf-submit').textContent = 'Đang gửi…';
-    setTimeout(function(){ window.location.href = 'Cam On.html'; }, 600);
+
+    var btn = form.querySelector('.rf-submit');
+    btn.textContent = 'Đang gửi…';
+    btn.disabled = true;
+
+    function redirect(){ window.location.href = 'Cam On.html'; }
+
+    if(SCRIPT_URL){
+      // no-cors: trình duyệt không đọc được response nhưng dữ liệu vẫn được gửi đến Apps Script
+      fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', body: JSON.stringify(data) })
+        .catch(function(){})
+        .then(redirect);
+    } else {
+      setTimeout(redirect, 600);
+    }
   });
 })();
 </script>
