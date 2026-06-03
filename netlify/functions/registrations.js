@@ -19,7 +19,8 @@ exports.handler = async (event) => {
       {
         headers: {
           'apikey': SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`
+          'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+          'x-client-info': 'netlify-function'
         }
       }
     );
