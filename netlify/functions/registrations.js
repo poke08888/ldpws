@@ -26,10 +26,15 @@ exports.handler = async (event) => {
     );
 
     const data = await res.json();
+
+    if (!res.ok) {
+      return { statusCode: 500, body: JSON.stringify({ error: 'Supabase lỗi: ' + JSON.stringify(data) }) };
+    }
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: JSON.stringify(Array.isArray(data) ? data : [])
     };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
