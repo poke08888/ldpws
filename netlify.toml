@@ -6,3 +6,8 @@
   from = "/"
   to   = "/Workshop%20Lam%20Thuong%20Hieu.html"
   status = 301
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
