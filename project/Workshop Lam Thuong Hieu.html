@@ -428,88 +428,53 @@ h1,h2,h3{font-weight:800;line-height:1.04;letter-spacing:-.02em}
   </div>
 </section>
 
-<!-- REGISTER + PAYMENT -->
+<!-- SOLDOUT -->
 <section class="section register" id="dangky">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:44px">
-      <span class="eyebrow">Đăng ký tham dự</span>
-      <h2>Giữ chỗ &amp; hoàn tất thanh toán</h2>
-      <p>Điền thông tin và chuyển khoản học phí. Suất tham dự được xác nhận theo thứ tự thanh toán — số lượng giới hạn.</p>
-    </div>
-
-    <div class="reg-grid">
-      <!-- FORM -->
-      <form class="reg-form" id="regForm" novalidate>
-        <div class="rf-row">
-          <label class="field">
-            <span>Họ và tên <i>*</i></span>
-            <input type="text" name="hoten" required placeholder="Nguyễn Văn A" />
-          </label>
-          <label class="field">
-            <span>Số điện thoại <i>*</i></span>
-            <input type="tel" name="sdt" required placeholder="09xx xxx xxx" />
-          </label>
+    <div class="soldout-wrap">
+      <div class="soldout-left">
+        <span class="eyebrow">Đăng ký tham dự</span>
+        <div class="soldout-badge">Hết chỗ</div>
+        <h2>Số lượng đã hết</h2>
+        <p>Rất tiếc, tất cả suất tham dự đã được đặt kín. Vui lòng liên hệ qua Zalo để được hỗ trợ và cập nhật thông tin về các chương trình tiếp theo.</p>
+        <div class="soldout-steps">
+          <div class="soldout-step">
+            <span class="ss-n">1</span>
+            <p>Quét mã QR bên cạnh để kết bạn Zalo</p>
+          </div>
+          <div class="soldout-step">
+            <span class="ss-n">2</span>
+            <p>Nhắn tin để được tư vấn và ưu tiên suất cho khoá tiếp theo</p>
+          </div>
         </div>
-        <div class="rf-row">
-          <label class="field">
-            <span>Email <i>*</i></span>
-            <input type="email" name="email" required placeholder="ban@congty.com" />
-          </label>
-          <label class="field">
-            <span>Công ty / Thương hiệu</span>
-            <input type="text" name="congty" placeholder="Tên doanh nghiệp" />
-          </label>
+      </div>
+      <aside class="soldout-qr">
+        <span class="qr-tag">Liên hệ Zalo</span>
+        <div class="soldout-qr-frame">
+          <img src="assets/zalo-qr.jpg" alt="Mã QR Zalo hỗ trợ" />
         </div>
-        <label class="field">
-          <span>Chức vụ <i>*</i></span>
-          <select name="chucvu" required>
-            <option value="" disabled selected>Chọn chức vụ của bạn</option>
-            <option>CEO / Nhà sáng lập</option>
-            <option>C-level (CMO, CCO, COO…)</option>
-            <option>Trưởng phòng / Quản lý</option>
-            <option>Khác</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>Ghi chú (câu hỏi, yêu cầu khác…)</span>
-          <textarea name="ghichu" rows="3" placeholder="Để lại ghi chú nếu cần"></textarea>
-        </label>
-
-        <label class="check" id="paidCheck">
-          <input type="checkbox" name="dachuyenkhoan" value="Đã chuyển khoản" />
-          <span class="cbox"></span>
-          <span class="ctext"><b>Tôi đã chuyển khoản học phí 2.999.000đ</b><small>Tích vào đây sau khi bạn hoàn tất chuyển khoản theo thông tin bên cạnh.</small></span>
-        </label>
-
-        <button type="submit" class="btn btn-red rf-submit">Gửi đăng ký</button>
-        <p class="rf-hint">Bằng việc gửi đăng ký, bạn đồng ý để chúng tôi liên hệ xác nhận suất tham dự.</p>
-        <div class="rf-success" id="regSuccess">
-          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
-          <div><b>Đã nhận đăng ký của bạn!</b><span>Chúng tôi sẽ liên hệ trong thời gian sớm nhất để xác nhận suất tham dự.</span></div>
-        </div>
-      </form>
-
-      <!-- PAYMENT PANEL -->
-      <aside class="pay">
-        <div class="pay-price">
-          <span class="pay-label">Học phí</span>
-          <div class="pay-num">2.999.000<i>đ</i></div>
-        </div>
-        <div class="pay-qr">
-          <img src="assets/qr-techcombank.png" alt="Mã QR chuyển khoản Techcombank" />
-        </div>
-        <p class="pay-scan">Quét mã VietQR / Napas 247 bằng app ngân hàng</p>
-        <div class="pay-bank">
-          <div class="pb-row"><span>Ngân hàng</span><b>Techcombank</b></div>
-          <div class="pb-row"><span>Chủ tài khoản</span><b>DANG THANH DINH</b></div>
-          <div class="pb-row"><span>Số tài khoản</span><b class="copyable" data-copy="7439797979">7439 7979 79 <svg viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></b></div>
-          <div class="pb-row"><span>Số tiền</span><b>2.999.000đ</b></div>
-        </div>
-        <p class="pay-tip">Nội dung CK gợi ý: <b>HỌ TÊN + SĐT</b>. Sau khi chuyển, nhớ tích <b>"Tôi đã chuyển khoản"</b> trong form.</p>
+        <p class="soldout-qr-hint">Mở Zalo → biểu tượng quét mã → hướng camera vào mã QR</p>
       </aside>
     </div>
   </div>
 </section>
+<style>
+.soldout-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.soldout-badge{display:inline-block;background:var(--red);color:#fff;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:6px 16px;border-radius:4px;margin:20px 0 16px}
+.soldout-wrap h2{font-size:clamp(28px,3.6vw,42px);margin-bottom:18px}
+.soldout-wrap>div>p{font-size:17px;color:var(--muted);max-width:480px;line-height:1.7}
+.soldout-steps{display:grid;gap:16px;margin-top:28px}
+.soldout-step{display:flex;gap:14px;align-items:flex-start}
+.ss-n{width:28px;height:28px;flex:none;border-radius:50%;background:var(--ink);color:var(--cream);display:grid;place-items:center;font-size:13px;font-weight:700;margin-top:1px}
+.soldout-step p{font-size:15px;color:var(--ink);padding-top:4px}
+.soldout-qr{background:var(--ink);border-radius:14px;padding:40px 36px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden}
+.soldout-qr::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(209,31,42,.3),transparent 70%)}
+.qr-tag{position:relative;z-index:1;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#e8b9bc;margin-bottom:18px}
+.soldout-qr-frame{position:relative;z-index:1;background:#fff;border-radius:12px;padding:14px;box-shadow:0 20px 40px -20px rgba(0,0,0,.6)}
+.soldout-qr-frame img{width:220px;height:220px;border-radius:4px;display:block}
+.soldout-qr-hint{position:relative;z-index:1;margin-top:18px;font-family:'Lora',serif;font-style:italic;font-size:14px;color:rgba(255,255,255,.7);max-width:240px}
+@media(max-width:820px){.soldout-wrap{grid-template-columns:1fr;gap:36px}.soldout-qr{padding:32px 28px}.soldout-qr-frame img{width:190px;height:190px}}
+</style>
 
 <!-- FOOTER -->
 <footer class="foot">
